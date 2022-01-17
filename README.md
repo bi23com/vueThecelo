@@ -14,8 +14,14 @@
 38px   >>  1.9rem;
 40px   >>  2rem;
 
+# 安装依赖
+npm install
+
+# 启动
+npm run serve
+
+# 打包
+npm run build-prod
 
 # 钱包依赖安装
 - cnpm install @celo-tools/use-contractkit
-
-npm uninstall @celo-tools/use-contractkit
