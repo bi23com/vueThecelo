@@ -4,7 +4,7 @@ const config = require('./package.json');
 const productionGzipExtensions = ['html', 'js', 'css'];
 const CompressionWebpackPlugin = require('compression-webpack-plugin');  // 实现Gzip压缩
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');   // 进行js文件的压缩。
-const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'development';
+const isProduction = process.env.NODE_ENV === 'production';
 // const isProduction = false;
 console.log(isProduction+"===isProduction")
 const ip = require('ip');
