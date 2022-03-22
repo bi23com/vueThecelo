@@ -28,9 +28,13 @@
                 <div class="wid30 textLeft Text16 h5Color">cUSD</div>
                 <div class="wid70 textRight Text18 greenColor">{{totalSupply.cUSD | thousands}}</div>
               </div>
-              <div class="flexDiv">
+              <div class="flexDiv marBtm28">
                 <div class="wid30 textLeft Text16 h5Color">cEUR</div>
                 <div class="wid70 textRight Text18 greenColor">{{totalSupply.cEUR | thousands}}</div>
+              </div>
+              <div class="flexDiv">
+                <div class="wid30 textLeft Text16 h5Color">cREAL</div>
+                <div class="wid70 textRight Text18 greenColor">{{totalSupply.cREAL | thousands}}</div>
               </div>
             </div>
           </el-col>
@@ -40,13 +44,13 @@
               <div class="flexDiv">
                 <el-tabs v-model="circulateSupplyTabs" class="epochDetailChange">
                   <el-tab-pane label="Epoch" name="Epoch">
-                    <vab-chart style="width: 100%;height: 210px" class="echartsCon" :autoresize="true" :options="CirculatingEcharts"
+                    <vab-chart style="width: 100%;height: 250px" class="echartsCon" :autoresize="true" :options="CirculatingEcharts"
                      :theme="($store.state.themeCls == 'whiteTheme' ? 'whiteThemeEchartGreen' : 'blackThemeEchartGreen')" />
                         
                   </el-tab-pane>
                   <el-tab-pane label="Details" name="Details">
                     <div class="myTable tabTable" style="margin-top:0;">
-                      <el-table height="210" class="downLoadTable"
+                      <el-table height="272px" class="downLoadTable"
                         :data="yearCirculatingSupply" fit align="center" style="width: 100%;overflow-y:hidden;"
                         :default-sort = "{prop: 'showTime', order: 'descending'}" >
                         <template slot="empty">
@@ -113,6 +117,18 @@
                   <p class="greenColor Text18">{{IncrementalSupply.ceur | thousands}}</p>
                 </div>
               </div>
+              <div class="flexDiv marBtm28">
+                <div class="wid50 textLeft Text16 h5Color">
+                  cREAL<span class="greenColor marLeft4 Text18">{{IncrementalSupply.crealRate}}%</span>
+                  <el-tooltip class="marLeft4" content="* Incremental Supply cREAL = ((Current Epoch TotalSupply cREAL) - (1st Epoch TotalSupply cREAL)) / (1st Epoch TotalSupply cREAL)">
+                    <span class="iconfont icon-zhushi h3Color cursorPointer">
+                    </span>
+                  </el-tooltip>
+                </div>
+                <div class="wid50 textRight">
+                  <p class="greenColor Text18">{{IncrementalSupply.creal | thousands}}</p>
+                </div>
+              </div>
               <p class="Text22 marTop42 marBtm22 weightText h6Color">Inflation (Year)</p>
               <div class="flexDiv marBtm28">
                 <div class="wid30 textLeft Text16 h5Color">CELO</div>
@@ -122,9 +138,13 @@
                 <div class="wid30 textLeft Text16 h5Color">cUSD</div>
                 <div class="wid70 textRight Text18 greenColor">~{{InflationYear.cusd | formatNum}}%</div>
               </div>
-              <div class="flexDiv">
+              <div class="flexDiv marBtm28">
                 <div class="wid30 textLeft Text16 h5Color">cEUR</div>
                 <div class="wid70 textRight Text18 greenColor">~{{InflationYear.ceur | formatNum}}%</div>
+              </div>
+              <div class="flexDiv">
+                <div class="wid30 textLeft Text16 h5Color">cREAL</div>
+                <div class="wid70 textRight Text18 greenColor">~{{InflationYear.creal | formatNum}}%</div>
               </div>
             </div>
           </el-col>
@@ -134,12 +154,12 @@
               <div class="flexDiv">
                 <el-tabs v-model="IncreSupplyTabs" class="epochDetailChange">
                   <el-tab-pane label="Epoch" name="Epoch">
-                    <vab-chart style="width: 100%;height: 286px" class="echartsCon" :autoresize="true" :options="DailyEcharts" 
+                    <vab-chart style="width: 100%;height: 390px" class="echartsCon" :autoresize="true" :options="DailyEcharts" 
                      :theme="($store.state.themeCls == 'whiteTheme' ? 'whiteThemeEchartBlue' : 'blackThemeEchartBlue')"/>
                   </el-tab-pane>
                   <el-tab-pane label="Details" name="Details">
                     <div class="myTable tabTable" style="margin-top:0;">
-                      <el-table height="286px" class="downLoadTable" :data="detailsData" fit align="center" 
+                      <el-table height="392px" class="downLoadTable" :data="detailsData" fit align="center" 
                         style="width: 100%;overflow-y:hidden;"  :default-sort="{prop: 'EpochShow', order: 'descending'}">
                         <template slot="empty">
                           <div class="flexDiv columnFlex justifyCenter" style="height: 290px;">
@@ -165,6 +185,11 @@
                         <el-table-column prop="ceurTotal" label="cEUR">
                           <template slot-scope="scope">
                             <span class="">{{scope.row.ceurTotal | formatNum3 | numFilterThreeCut}}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column prop="crealTotal" label="cREAL">
+                          <template slot-scope="scope">
+                            <span class="">{{scope.row.crealTotal | formatNum3 | numFilterThreeCut}}</span>
                           </template>
                         </el-table-column>
                       </el-table>
@@ -197,11 +222,14 @@ export default {
         cusdRate: '',
         ceur: 0,
         ceurRate: '',
+        creal: 0,
+        crealRate: '',
       },
       InflationYear: {
         celo: '',
         cusd: '',
-        ceur: ''
+        ceur: '',
+        creal: ''
       },
       detailsData: [],
       celoNum: {
@@ -377,7 +405,11 @@ export default {
               <p class="tooltipHint Text16 line2 flexDiv">
               <span style="width: 100px;display:inline-block;" class="textColor">ceurTotal</span>${this.$format.IntNumFilterThreeCut(this.detailsData[i].ceurTotal)}</p>
               <p class="tooltipHint Text16 flexDiv line2">
-              <span style="width: 100px;display:inline-block;" class="textColor"></span>${this.detailsData[i].ceurlineShow}</p></div>`
+              <span style="width: 100px;display:inline-block;" class="textColor"></span>${this.detailsData[i].ceurlineShow}</p>
+              <p class="tooltipHint Text16 line2 flexDiv">
+              <span style="width: 100px;display:inline-block;" class="textColor">crealTotal</span>${this.$format.IntNumFilterThreeCut(this.detailsData[i].crealTotal)}</p>
+              <p class="tooltipHint Text16 flexDiv line2">
+              <span style="width: 100px;display:inline-block;" class="textColor"></span>${this.detailsData[i].crealLineShow}</p></div>`
             return str;
           }
         },
@@ -583,6 +615,63 @@ export default {
               },
             },
           },
+          {
+            name: "cREAL",
+            smooth: 0.6,
+            symbol: 'none',   // 不显示拐点
+            type: "line",
+            markPoint: {
+              symbol: 'image://https://thecelo.com/staticNew/markBgEmpty.png',
+              // symbolSize: [84, 28], //容器大小
+              symbolOffset: ['0', '-5'],  // 位置偏移
+              animation: false,
+              itemStyle: {
+                normal:{
+                  label:{
+                    color: (res) => {},//气泡中字体颜色
+                    fontSize: 12,
+                    fontWeight: 'normal',
+                    formatter:  (res) => {
+                      if(this.$store.state.themeCls == 'whiteTheme'){
+                        if(this.ceurLinefirstThree.indexOf(JSON.stringify(res.value)) != -1){
+                          return `{a|              ${this.$format.thousands(res.value)}}`
+                        }
+                        if(this.ceurLineLastThree.indexOf(JSON.stringify(res.value)) != -1){
+                          return `{a| ${this.$format.thousands(res.value)}}                      `
+                        }
+                        return `{a| ${this.$format.thousands(res.value)}}`
+                      }
+                      if(this.ceurLinefirstThree.indexOf(JSON.stringify(res.value)) != -1){
+                        return `{b|              ${this.$format.thousands(res.value)}}`
+                      }
+                      if(this.ceurLineLastThree.indexOf(JSON.stringify(res.value)) != -1){
+                        return `{b| ${this.$format.thousands(res.value)}}                      `
+                      }
+                      return `{b| ${this.$format.thousands(res.value)}}`
+                    },
+                    rich: {
+                      a: {
+                        color: '#7B72E6'
+                      },
+                      b: {
+                        color: '#ffffff',
+                      }
+                    }
+                  }
+                }
+              },
+              data: [
+                {type: 'max', name: '最大值'},
+                {type: 'min', name: '最小值'}
+              ]
+            },
+            data: [],
+            itemStyle: {
+              normal: {
+                color: '#7B72E6',
+              },
+            },
+          },
         ],
       },
     };
@@ -653,6 +742,7 @@ export default {
         var pre_cgld = 0;
         var pre_cusd = 0;
         var pre_ceur = 0;
+        var pre_creal = 0;
         var epochNum = 0;
         var locked_gold = obj.locked_gold;
         var supply_history = [];
@@ -661,26 +751,41 @@ export default {
         var celoLineData = [];
         var cusdLineData = [];
         var ceurLineData = [];
+        var cREALLineData = [];
         Object.keys(locked_gold).forEach((epoch, i) => {
           epochNum = epoch;
-          let epoch_date = this.$format.getEpochDate(epoch)
+          let epoch_date = this.$format.getEpochDate(epoch);
+          // cgld
           var cgldSupply = locked_gold[epoch].cgldSupply - locked_gold['1'].cgldSupply;
+          cgldSupply = Math.round(cgldSupply);
+          // cusd
           var cusdSupply = locked_gold[epoch].cusdSupply - locked_gold['1'].cusdSupply;
-          var ceurSupply = locked_gold[epoch].ceurSupply - locked_gold['337'].ceurSupply
-          ceurSupply = ceurSupply < 0 ? 0 : ceurSupply
+          cusdSupply = Math.round(cusdSupply);
+          // ceur
+          var ceurSupply = locked_gold[epoch].ceurSupply - locked_gold['337'].ceurSupply;
+          ceurSupply = ceurSupply < 0 ? 0 : ceurSupply;
+          ceurSupply = Math.round(ceurSupply);
+          // creal
+          var crealSupply = locked_gold[epoch].crealSupply-locked_gold['603'].crealSupply;
+          crealSupply = crealSupply< 0 ? 0 : crealSupply;
+          crealSupply = Math.round(crealSupply);
           pre_cgld = cgldSupply;
           pre_cusd = cusdSupply;
           pre_ceur = ceurSupply;
+          pre_creal = crealSupply;
           // Daily Incremental Supply 》》》 details 表格 + 图标显示所需数据
           if(parseInt(epoch) > 1){
             let add_celo_supply = locked_gold[epoch].cgldSupply-locked_gold[(parseInt(epoch)-1).toString()].cgldSupply;
             let add_celo_supply_str = add_celo_supply >=0 ? '+ ' + add_celo_supply.toFixed(0) : add_celo_supply.toFixed(0);
-            // 
+            // cusd
             let add_cusd_supply = locked_gold[epoch].cusdSupply-locked_gold[(parseInt(epoch)-1).toString()].cusdSupply;
             let add_cusd_supply_str = add_cusd_supply >=0 ? '+ ' + add_cusd_supply.toFixed(0) : add_cusd_supply.toFixed(0);
-            // 
+            // ceur
             let add_ceur_supply = locked_gold[epoch].ceurSupply-locked_gold[(parseInt(epoch)-1).toString()].ceurSupply;
             let add_ceur_supply_str = add_ceur_supply >=0 ? '+ ' + add_ceur_supply.toFixed(0) : add_ceur_supply.toFixed(0);
+            // creal
+            let add_creal_supply = locked_gold[epoch].crealSupply-locked_gold[(parseInt(epoch)-1).toString()].crealSupply;
+            let add_creal_supply_str = add_creal_supply >=0 ? '+ ' + add_creal_supply.toFixed(0) : add_creal_supply.toFixed(0);
             supply_history.push({
               tip: `${this.$format.chartTipTitle(epoch)}`,
               EpochShow: this.$format.getEpochDateSorate(epoch),
@@ -690,7 +795,9 @@ export default {
               cusdTotal: cusdSupply,
               cusdlineShow: add_cusd_supply_str + ' cUSD',
               ceurTotal: ceurSupply,
-              ceurlineShow: add_ceur_supply_str + ' cEUR'
+              ceurlineShow: add_ceur_supply_str + ' cEUR',
+              crealTotal: crealSupply,
+              crealLineShow: add_creal_supply_str + ' cREAL'
             });
           }
           // Daily Incremental Supply 折线图数据
@@ -698,11 +805,13 @@ export default {
           celoLineData.push(parseInt(cgldSupply));
           cusdLineData.push(parseInt(cusdSupply));
           ceurLineData.push(parseInt(ceurSupply));
+          cREALLineData.push(parseInt(crealSupply));
         });
 
         var release_cgld_rate = ((pre_cgld * 100) / locked_gold['1'].cgldSupply).toFixed(4);
         var release_cusd_rate = ((pre_cusd * 100) / locked_gold['1'].cusdSupply).toFixed(4);
         var release_ceur_rate = ((pre_ceur * 100) / locked_gold['337'].ceurSupply).toFixed(4);
+        var release_creal_rate = ((pre_creal * 100) / locked_gold['603'].crealSupply).toFixed(4);
         this.IncrementalSupply = {
           cgld: pre_cgld.toFixed(0),
           cgldRate: release_cgld_rate,
@@ -710,11 +819,14 @@ export default {
           cusdRate: release_cusd_rate,
           ceur: pre_ceur.toFixed(0),
           ceurRate: release_ceur_rate,
+          creal: pre_creal.toFixed(0),
+          crealRate: release_creal_rate,
         };
         this.InflationYear = {
           celo: release_cgld_rate * (365 / (epochNum - 27)).toFixed(2),
           cusd: release_cusd_rate * (365 / (epochNum - 11)).toFixed(2),
-          ceur: release_ceur_rate * (365 / (epochNum - 327)).toFixed(2)
+          ceur: release_ceur_rate * (365 / (epochNum - 327)).toFixed(2),
+          creal: release_creal_rate * (365 / (epochNum - 603)).toFixed(2)
         }
         // Daily Incremental Supply 折线图数据 + 详情列表 
         // 修改  x 轴  起始数据内容
@@ -752,6 +864,17 @@ export default {
         this.ceurLineLastThree = [
           JSON.stringify(ceurLineData[last1ceur]), JSON.stringify(ceurLineData[last2ceur]), JSON.stringify(ceurLineData[last3ceur])
         ];
+        // crealLineLastThree
+        // 取前三个为数组 、 后三个为数组   crealLinefirstThree    crealLineLastThree
+        this.crealLinefirstThree = [
+          JSON.stringify(cREALLineData[0]), JSON.stringify(cREALLineData[1]), JSON.stringify(cREALLineData[2])
+        ];
+        var last1creal = cREALLineData.length - 1;
+        var last2creal = cREALLineData.length - 2;
+        var last3creal = cREALLineData.length - 3;
+        this.crealLineLastThree = [
+          JSON.stringify(cREALLineData[last1creal]), JSON.stringify(cREALLineData[last2creal]), JSON.stringify(cREALLineData[last3creal])
+        ];
         // 设置
         if (this.$store.state.themeCls == 'whiteTheme') {
           this.setWhiteDailyEcharts();
@@ -762,6 +885,7 @@ export default {
         this.DailyEcharts.series[0].data = celoLineData;
         this.DailyEcharts.series[1].data = cusdLineData;
         this.DailyEcharts.series[2].data = ceurLineData;
+        this.DailyEcharts.series[3].data = cREALLineData;
         this.detailsData = supply_history;
       });
     },

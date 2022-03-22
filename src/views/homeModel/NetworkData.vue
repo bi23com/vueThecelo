@@ -368,12 +368,12 @@ export default {
             var i= res[0].dataIndex;
             var cls = this.$store.state.themeCls != 'whiteTheme' ? 'blackTooltip' : '';
             var str = `<div class="${cls}">
-              <span class="textColor Text16">${this.epochData[i]}</span>
-              <p class="tooltipHint Text16 marTop4 marBtm6 flexDiv">
-              <span style="width: 100px;display:inline-block;" class="textColor">${res[0].seriesName}</span>${this.$format.thousands(res[0].value)}</p>
-              <p class="tooltipHint Text16 flexDiv">
-              <span style="width: 100px;display:inline-block;" class="textColor">${res[1].seriesName}</span>${this.$format.thousands(res[1].value)}</p>
-              </div>`
+              <span class="textColor Text16">${this.epochData[i]}</span>`;
+            for(var i =0; i<res.length; i++){
+              str+= `<p class="tooltipHint Text16 marTop4 marBtm6 flexDiv">
+              <span style="width: 100px;display:inline-block;" class="textColor">${res[i].seriesName}</span>${this.$format.thousands(res[i].value)}</p>`
+            }
+            str+= `</div>`
             return str;
           }
         },
@@ -659,7 +659,6 @@ export default {
 
       // epochAddressesTable.removeRows(0,epochAddressesTable.getNumberOfRows())
       let keys = Object.keys(that.epoch_address_txs);
-      console.log(keys.length + '====keys==='+that.epoch_address_txs.length);
       if(!d || keys.length-d < 0) {d = keys.length;}
       keys = keys.splice(keys.length-d);
       var epoch_dateData = [];

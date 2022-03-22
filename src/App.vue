@@ -8,7 +8,7 @@
             <router-view></router-view>
           </keep-alive>
         </transition>
-        <linksWallets></linksWallets>
+        <!-- <linksWallets></linksWallets> -->
         <baseCon></baseCon>
       </div>
     </div>

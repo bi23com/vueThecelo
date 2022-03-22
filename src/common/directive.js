@@ -126,7 +126,8 @@ Vue.directive('sticky', {
       'resize',
       (setWidthFunObj[uid] = () => {
         setHeadWidth(el)
-      })
+      }),
+      { passive: false}
     )
     // 获取当前滚动的容器是什么。如果是document滚动。则可默认不传入parent参数
     const scrollParent =
@@ -136,7 +137,8 @@ Vue.directive('sticky', {
       'scroll',
       (fixFunObj[uid] = () => {
         fixHead(scrollParent, el, binding.value.top)
-      })
+      }),
+      { passive: false}
     )
     // 如果是局部DOM元素内滚动。则需要监听document滚动，document滚动是同步让表头一起滚动。并将监听函数存入 监听函数对象中，方便移除监听事件
     if (binding.value.parent) {
@@ -150,7 +152,7 @@ Vue.directive('sticky', {
           binding.value.top + scrollParent.getBoundingClientRect().top
           doFix(dom, fixtop, 'fixed')
         }
-      })
+      },{ passive: false})
     }
   },
   // component 更新后。重新计算表头宽度

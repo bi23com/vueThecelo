@@ -36,12 +36,13 @@
           <el-tabs v-model="TypeTabs" class="epochDetailChange" @tab-click="handleClick">
             <el-tab-pane label="CELO/cUSD" name="1"></el-tab-pane>
             <el-tab-pane label="CELO/cEUR" name="2"></el-tab-pane>
+            <el-tab-pane label="CELO/cREAL" name="3"></el-tab-pane>
           </el-tabs>
         </div>
         <div class="marTop24">
           <div class="flexDiv">
             <p class="Text24 marBtm12">
-              {{(TypeTabs == '1') ? '$' : '€'}}{{celo_lastest_price}}
+              {{TypeTabs | fuhao}}{{celo_lastest_price}}
               <span :class="lasetest_change_rate>0 ? 'greenColor' : (lasetest_change_rate< 0 ? 'redColor' : '')">
                 ( {{lasetest_change_rate>0 ? '+' : ''}}
                 {{lasetest_change_rate}} % 24H)
@@ -119,13 +120,13 @@
               <template slot-scope="scope">
                 {{scope.row.OutAmount | formatNum}}
                 <span class="greenColor" v-if="scope.row.status">CELO</span>
-                <span class="yellowColor" v-if="!scope.row.status">{{TypeTabs == '1' ? 'cUSD' : 'cEUR'}}</span>
+                <span class="yellowColor" v-if="!scope.row.status">{{TypeTabs | typeName}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="InAmount" align="center" width="150" label="Amount (In)">
               <template slot-scope="scope">
                 {{scope.row.InAmount | formatNum}}
-                <span class="yellowColor" v-if="scope.row.status">{{TypeTabs == '1' ? 'cUSD' : 'cEUR'}}</span>
+                <span class="yellowColor" v-if="scope.row.status">{{TypeTabs | typeName}}</span>
                 <span class="greenColor" v-if="!scope.row.status">CELO</span>
               </template>
             </el-table-column>
@@ -590,6 +591,24 @@ export default {
     VabChart,
   },
   computed: {
+    sendTypeName() {
+      var val = this.TypeTabs;
+      if(val == '2'){ return 'cEUR'; }
+      if(val == '3'){ return 'cREAL'; }
+      return 'cUSD';
+    },
+  },
+  filters: {
+    fuhao(val){
+      if(val == '2'){ return '€'; }
+      if(val == '3'){ return 'R$'; }
+      return '$';
+    },
+    typeName(val){
+      if(val == '2'){ return 'cEUR'; }
+      if(val == '3'){ return 'cREAL'; }
+      return 'cUSD';
+    }
   },
   mounted() {
     setTimeout(()=>{
@@ -737,7 +756,7 @@ export default {
     getLineEcharts() {
       var parmas = {
         method: 'get_k_line',
-        symbol: this.TypeTabs == '1' ? 'cUSD' : 'cEUR',
+        symbol: this.sendTypeName,
         k_time: this.kTime
       };
       var cha = 0.006;
@@ -798,7 +817,7 @@ export default {
       this.isloadListData = true;
       var parmas = {
         method: 'trading_records',
-        symbol: this.TypeTabs == '1' ? 'cUSD' : 'cEUR',
+        symbol: this.sendTypeName,
         type: this.tabPosition,
         page: Number(this.listPageData.pageNo - 1),
         address: this.SearchText

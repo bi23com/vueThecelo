@@ -6,11 +6,20 @@ import 'default-passive-events'
 import './common/directive'
 
 Vue.config.productionTip = false;
-// 
-import ElementUI from 'element-ui'
+// 全局引用
+// import ElementUI from 'element-ui'
+// import locale from '../node_modules/element-ui/lib/locale/lang/en.js'; 
+// Vue.use(ElementUI, {locale} );
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from '../node_modules/element-ui/lib/locale/lang/en.js';    
-Vue.use(ElementUI, {locale} );
+
+// aa按需加载
+import lang from '../node_modules/element-ui/lib/locale/lang/en.js'; 
+import locale from 'element-ui/lib/locale'
+// 设置语言
+locale.use(lang)
+import element from './element/index'
+Vue.use(element)
+
 // 
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;
@@ -25,8 +34,8 @@ import VueMatchHeights from "vue-match-heights";
 Vue.use(VueMatchHeights);
 
 // 瀑布流
-import waterfall from 'vue-waterfall2'
-Vue.use(waterfall)
+// import waterfall from 'vue-waterfall2'
+// Vue.use(waterfall)
 
 // 格式化
 import format from './common/format' // 全局util

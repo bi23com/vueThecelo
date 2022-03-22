@@ -41,9 +41,12 @@
           </el-col>
         </el-row>
         <!-- 实际内容 -->
-        <waterfall class="goveranceModFat" :data="showgovernanceList" :col="Waterfallcol">
-          <template>
-            <el-card class="governaceDiv goveranceMod" v-for="(gcl,index) in showgovernanceList" :key="index">
+        <el-row :gutter="20">
+          <el-col :lg="8" :md="8" :sm="12" :xs="24" v-for="(gcl,index) in showgovernanceList" :key="index">
+        <!-- <waterfall class="goveranceModFat" :data="showgovernanceList" :col="Waterfallcol"> -->
+          <!-- <template> -->
+            <!--  v-for="(gcl,index) in showgovernanceList" :key="index" -->
+            <el-card class="governaceDiv goveranceMod">
               <div class="governaceDivStatus">
                 <div class="c"></div>
                 <span class="Text16" :class="gcl.status | statusBg">{{(gcl.status == 'Vote' ? 'Voting' : gcl.status)}}</span>
@@ -235,8 +238,10 @@
               </div> -->
               
             </el-card>
-          </template>
-        </waterfall>
+          <!-- </template> -->
+        <!-- </waterfall> -->
+          </el-col>
+        </el-row>
         <div class="flexDiv columnFlex justifyCenter" style="height: 360px;" v-if="!(showgovernanceList.length > 0) && !isskeleton">
           <img src="../assets/images/notData2.png" class="normalImg">
           <p class="notDataText h5Color" style="margin-top: -16px;">Nothing</p>
@@ -368,20 +373,20 @@ export default {
     this.getGasPrice();
 
     this.getListData();
-    window.screenWidth = document.body.clientWidth || document.body.offsetWidth;
-    if (window.screenWidth < 768) {
-      this.Waterfallcol = 1;
-    } else if (window.screenWidth < 996) {
-      this.Waterfallcol = 2;
-    }
+    // window.screenWidth = document.body.clientWidth || document.body.offsetWidth;
+    // if (window.screenWidth < 768) {
+    //   this.Waterfallcol = 1;
+    // } else if (window.screenWidth < 996) {
+    //   this.Waterfallcol = 2;
+    // }
 
-    const that = this
-    window.onresize = () => {
-      return (() => {
-        window.screenWidth = document.body.clientWidth || document.body.offsetWidth;
-        that.screenWidth = window.screenWidth;
-      })()
-    }
+    // const that = this
+    // window.onresize = () => {
+    //   return (() => {
+    //     window.screenWidth = document.body.clientWidth || document.body.offsetWidth;
+    //     that.screenWidth = window.screenWidth;
+    //   })()
+    // }
 
     var activityDate = [];
     for (var i = "1"; i < "32"; i++) {
@@ -396,26 +401,26 @@ export default {
 
   },
   watch: {
-    screenWidth(val) {
-      // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
-      if (!this.timer) {
-        // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
-        this.screenWidth = val;
-        if (val < 768) {
-          this.Waterfallcol = 1;
-        } else if (val < 996) {
-          this.Waterfallcol = 2;
-        } else {
-          this.Waterfallcol = 3;
-        }
-        this.timer = true;
-        let that = this;
-        setTimeout(function () {
-          // 打印screenWidth变化的值
-          that.timer = false;
-        }, 400)
-      }
-    }
+    // screenWidth(val) {
+    //   // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+    //   if (!this.timer) {
+    //     // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+    //     this.screenWidth = val;
+    //     if (val < 768) {
+    //       this.Waterfallcol = 1;
+    //     } else if (val < 996) {
+    //       this.Waterfallcol = 2;
+    //     } else {
+    //       this.Waterfallcol = 3;
+    //     }
+    //     this.timer = true;
+    //     let that = this;
+    //     setTimeout(function () {
+    //       // 打印screenWidth变化的值
+    //       that.timer = false;
+    //     }, 400)
+    //   }
+    // }
   },
   methods: {
     async getGasPrice(){

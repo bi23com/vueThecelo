@@ -57,7 +57,7 @@
                 <a class="linksA" href="https://celovote.com/">Celo vote</a><span class="h3Color Text16"> - By zviad | WOTrust</span>
               </p>
               <p class="Text16">
-                <a class="linksA" href="https://cauldron.pretoriaresearchlab.io/block-map">Celo signed map</a><span class="h3Color Text16"> - By Pretoria Research Lab</span>
+                <a class="linksA" href="https://dev.vido.vladiatorlabs.io/block-map">Celo signed map</a><span class="h3Color Text16"> - By Pretoria Research Lab</span>
               </p>
               <p class="Text16">
                 <a class="linksA" href="https://blog.openzeppelin.com/celo-contracts-audit/#introduction">Celo Contracts Audit</a><span class="h3Color Text16"> - By OpenZeppelin Security</span>

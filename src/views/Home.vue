@@ -7,7 +7,7 @@
     <TokenSupply :totalSupply="totalSupply"></TokenSupply>
     <!-- CELO & additional cryptoassets  CELO和其他加密资产-->
     <cryptoassets></cryptoassets>
-
+    <linksWallets></linksWallets>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import NetworkData from "@/views/homeModel/NetworkData";
 import ValidatorGroups from "@/views/homeModel/ValidatorGroups";
 import TokenSupply from "@/views/homeModel/TokenSupply";
 import cryptoassets from "@/views/homeModel/cryptoassets";
-// import linksWallets from "@/views/homeModel/linksWallets";
+import linksWallets from "@/views/homeModel/linksWallets";
 
 export default {
   name: "Home",
@@ -45,7 +45,8 @@ export default {
       totalSupply: {
         CELO: 0,
         cUSD: 0,
-        cEUR: 0
+        cEUR: 0,
+        cREAL: 0
       },
       // ValidatorGroups 模块中   
       groups: {
@@ -63,7 +64,8 @@ export default {
     NetworkData,
     ValidatorGroups,
     TokenSupply,
-    cryptoassets
+    cryptoassets,
+    linksWallets
   },
   computed: {
   },
@@ -84,11 +86,11 @@ export default {
         var block_height = parseInt(obj.dashboard[0], 16);
         this.networkData.TotalBlocks = (block_height > 0) ? block_height : 0;
         this.networkData.address = obj.dashboard[17];
-        this.networkData.name = obj.dashboard[18];
+        this.networkData.name = obj.dashboard[18] || '';
         var Epoch_Size = obj.dashboard[3];
         this.networkData.EpochSize = Epoch_Size;
         this.networkData.epocNo = parseInt(this.networkData.TotalBlocks/Epoch_Size)+1;
-        this.networkData.logoImg = this.networkData.address ? `https://thecelo.com/logos/${this.networkData.address.toLowerCase()}.jpg` : '';
+        this.networkData.logoImg = this.networkData.address ? `https://thecelo.com/logos/${(this.networkData.address+='').toLowerCase()}.jpg` : '';
         var Blocks_until_Epoch = (block_height > 0) ? this.networkData.TotalBlocks % Epoch_Size : obj.dashboard[2];
         var epoc_end_seconds = (Epoch_Size-Blocks_until_Epoch) * 5;
         var hours = parseInt(epoc_end_seconds / 3600);
@@ -102,6 +104,7 @@ export default {
         this.totalSupply.CELO = obj.dashboard[14].toFixed(0);
         this.totalSupply.cUSD = obj.dashboard[15].toFixed(0);
         this.totalSupply.cEUR = obj.dashboard[16].toFixed(0);
+        this.totalSupply.cREAL = obj.dashboard[20] ? obj.dashboard[20].toFixed(0) : 0;
         // ValidatorGroups 模块中   groups
         this.groups.ele = obj.dashboard[10];
         this.groups.reg = obj.dashboard[11];
@@ -111,7 +114,7 @@ export default {
         setTimeout(() => {
           ///调取接口
           this.getBlockData();
-        }, 6000)
+        }, 5000)
       });
     }
   },
